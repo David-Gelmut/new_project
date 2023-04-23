@@ -23,7 +23,7 @@ return new class extends Migration
             $table->index('product_id','product_stock_product_idx');
             $table->index('stock_id','product_stock_stock_idx');
 
-
+            $table->unsignedBigInteger('quantity');
 
             $table->timestamps();
         });
