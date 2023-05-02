@@ -42,10 +42,11 @@ class StockController extends Controller
     }
 
     public function destroy(Stock $stock) {
-        $products_stocks_stocks= ProductStock::where('stock_id', $stock->id)->get();
-        foreach ($products_stocks_stocks as $products_stocks_stock){
-            $products_stocks_stock->delete();
-        }
+   //     $products_stocks_stocks= ProductStock::where('stock_id', $stock->id)->get();
+   //     foreach ($products_stocks_stocks as $products_stocks_stock){
+    //        $products_stocks_stock->delete();
+   //     }
+        $stock->products()->detach();
         $stock->delete();
         return redirect()->route('index_stocks');
     }

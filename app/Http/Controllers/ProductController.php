@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 class ProductController extends Controller
 {
     public function index() {
+      //  dd(Product::with(['stocks'])->get());
         $context = ['products' => Product::all()];
         return view('products.index', $context);
     }
@@ -25,43 +26,41 @@ class ProductController extends Controller
         $data=request()->validate([
                 'title'=>'string',
                 'description'=>'string',
+                'stocks'=>'',
+                'number'=>''
             ]);
-      $product= Product::create($data);
-
-      ProductStock::create([
-          'product_id'=>$product->id,
-          'stock_id'=>$request->stock_id,
-          'quantity'=>$request->number
-      ]);
-      return redirect()->route('index_products');
+        $stock=$data['stocks'];
+        unset($data['stocks']);
+          $product= Product::create($data);
+          $product->stocks()->attach($stock,['quantity'=>$data['number']]);
+        return redirect()->route('index_products');
     }
 
     public function edit(Product $product) {
         $stocks=Stock::all();
-        $products_stocks_product= ProductStock::where('product_id', $product->id)->get();
-        return view('products.edit',['product' => $product,'stocks'=>$stocks,'products_stocks_product'=>$products_stocks_product]);
+        return view('products.edit',['product' => $product,'stocks'=>$stocks]);
     }
 
     public function update(Product $product,Request $request) {
        $data=request()->validate([
             'title'=>'string',
-            'description'=>'string'
+            'description'=>'string',
+            'stocks'=>'',
+            'number'=>''
        ]);
-     $product->update($data);
-     $products_stocks_product= ProductStock::where('product_id', $product->id)->get();
-         foreach ($products_stocks_product as $product_stocks_product){
-             $value =  $product_stocks_product->stock_id;
-             $product_stocks_product->update([
-                 'quantity'=>$request[$value]
-             ]);
-         }
+    $stock=$data['stocks'];
+    unset($data['stocks']);
+
+    $product->update($data);
+    $number=$data['number'];
+    $product->stocks()->detach($stock);
+    $product->stocks()->attach($stock,['quantity'=>$number]);
      return redirect()->route('detail_product',['product' => $product]);
     }
 
     public function destroy(Product $product) {
-        $products_stocks_product= ProductStock::where('product_id', $product->id)->get();
-        foreach ($products_stocks_product as $product_stocks_product){
-            $product_stocks_product->delete();
+        foreach ($product->stocks as $stock){
+            $product->stocks()->detach($stock);
         }
         $product->delete();
         return redirect()->route('index_products');

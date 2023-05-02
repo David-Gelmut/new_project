@@ -13,13 +13,13 @@ class Product extends Model
     protected $fillable = ['title', 'description'];
     public  function stocks()
     {
-        return $this->belongsToMany(Stock::class,'product_stocks','product_id','stock_id');
+        return $this->belongsToMany(Stock::class,'product_stocks','product_id','stock_id')->withPivot('quantity');
     }
-    public  function quantity($id)
-    {
-       return $this->belongsToMany(Stock::class, 'product_stocks', 'product_id','stock_id')->withPivot('quantity')
-           ->where('stock_id', '=', $id)->get();;
-    }
+  //  public  function quantity($id)
+  //  {
+   //    return $this->belongsToMany(Stock::class, 'product_stocks', 'product_id','stock_id')->withPivot('quantity')
+  //        ->where('stock_id', '=', $id)->get();;
+  //  }
 
 
 

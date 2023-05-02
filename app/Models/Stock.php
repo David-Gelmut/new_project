@@ -11,12 +11,12 @@ class Stock extends Model
     protected $fillable = ['title'];
     public  function products()
 {
-    return $this->belongsToMany(Product::class,'product_stocks','stock_id','product_id');
+    return $this->belongsToMany(Product::class,'product_stocks','stock_id','product_id')->withPivot('quantity');
 }
 
-    public  function quantity($id)
-    {
-        return $this->belongsToMany(Product::class, 'product_stocks', 'stock_id','product_id')->withPivot('quantity')
-            ->where('product_id', '=', $id)->get();;;
-    }
+  //  public  function quantity($id)
+  //  {
+  //      return $this->belongsToMany(Product::class, 'product_stocks', 'stock_id','product_id')->withPivot('quantity')
+//           ->where('product_id', '=', $id)->get();;;
+  //  }
 }

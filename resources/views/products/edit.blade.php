@@ -15,16 +15,18 @@
             <input name="description" type="text" class="form-control" id="description"  value="{{$product->description}}">
         </div>
 
-            @foreach($products_stocks_product as $key=>$product_stocks_product)
-                 <div class="mb-3">
-                        <label for="stocks_{{$key}}" class="form-label">
-                           @foreach($stocks as $stock)
-                            {{$product_stocks_product->stock_id==$stock->id?$stock->title:''}}
-                            @endforeach
-                        </label>
-                        <input name="{{$product_stocks_product->stock_id}}" type="number" class="form-control" id="stocks_{{$key}}" value="{{$product_stocks_product->quantity}}">
-                </div>
-            @endforeach
+        <div class="mb-3">
+            <label for="stocks" class="form-label">Stocks</label>
+            <select class="form-select" id="stocks" name="stocks[]">
+                @foreach($stocks as $stock)
+                    <option value="{{$stock->id}}">{{$stock->title}}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="number" class="form-label">Number</label>
+            <input name="number" type="text" class="form-control" id="number">
+        </div>
         <button type="submit" class="btn btn-primary">Update</button>
     </form>
 @endsection('main')

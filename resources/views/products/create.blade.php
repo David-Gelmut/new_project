@@ -15,7 +15,7 @@
         </div>
         <div class="mb-3">
             <label for="stocks" class="form-label">Stocks</label>
-            <select class="form-select" id="stocks" name="stock_id">
+            <select class="form-select" id="stocks" name="stocks">
                 @foreach($stocks as $stock)
                 <option value="{{$stock->id}}">{{$stock->title}}</option>
                 @endforeach

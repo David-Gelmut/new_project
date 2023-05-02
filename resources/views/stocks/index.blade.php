@@ -23,9 +23,7 @@
                         @foreach($stock->products as $product)
                             <div>
                                 <a href="{{ route('detail_product', ['product' => $product->id]) }}">{{$product->title}}</a>
-                                @foreach($product->quantity($stock->id) as $quant)
-                                    - {{$quant->pivot->quantity}} шт.
-                                @endforeach
+                                {{$product->pivot->quantity}} шт.
                             </div>
                         @endforeach
                     </td>
